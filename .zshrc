@@ -83,6 +83,8 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Zsh-autosuggestions, more here:
+# https://github.com/tarruda/zsh-autosuggestions
 # Load zsh-autosuggestions.
 source ~/.zsh/zsh-autosuggestions/autosuggestions.zsh
 
@@ -92,4 +94,6 @@ zle-line-init() {
 }
 
 zle -N zle-line-init
+# Accept suggestions without leaving insert mode
+bindkey '^f' vi-forward-word
 
