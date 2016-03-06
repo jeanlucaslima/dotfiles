@@ -1,6 +1,16 @@
+# vim:ft=zsh ts=2 sw=2 sts=2
+#
+# agnoster's Theme - https://gist.github.com/3712874
+# A Powerline-inspired theme for ZSH
+#
+# # README
+#
+# In order for this theme to render correctly, you will need a
+# [Powerline-patched font](https://gist.github.com/1595572).
+
 export ZSH=/home/jean/.oh-my-zsh
 
-ZSH_THEME="ys"
+ZSH_THEME="agnoster"
 
 CASE_SENSITIVE="true"
 
@@ -9,7 +19,7 @@ export UPDATE_ZSH_DAYS=13
 ENABLE_CORRECTION="true"
 HIST_STAMPS="yyyy-mm-dd"
 
-plugins=(git git-flow nvm extract rbenv zsh-completions zsh-syntax-highlighting)
+plugins=(git git-flow nvm extract rbenv docker zsh-completions zsh-syntax-highlighting)
 # PS: zsh-syntax-highlitings has to be last
 #
 # zsh-syntax-highlighitings installation:
