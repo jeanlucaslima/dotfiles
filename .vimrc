@@ -9,7 +9,7 @@ Plugin 'git://github.com/itchyny/lightline.vim'
 Plugin 'git://github.com/sjl/gundo.vim.git'
 Plugin 'git://github.com/kevinw/pyflakes-vim.git'
 Plugin 'git://github.com/mxw/vim-jsx.git'
-Plugin 'git://github.com/nanotech/jellybeans.vim.git'
+Plugin 'git://github.com/elixir-lang/vim-elixir.git'
 call vundle#end()
 filetype plugin indent on
 
