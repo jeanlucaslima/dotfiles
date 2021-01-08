@@ -1,6 +1,7 @@
 """"""""""""""""""""
 " General
 """"""""""""""""""""
+set number
 
 " This one everyone adds so I'm adding it (vi compatibility, ik ik)
 set nocompatible
