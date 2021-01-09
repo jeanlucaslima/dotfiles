@@ -9,9 +9,8 @@ set nocompatible
 " How many lines of history vim has to remember
 set history=500
 
-" Enable filetype plugins
-filetype plugin on
-filetype indent on
+" Vundle requires
+filetype off
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -25,6 +24,23 @@ nmap <leader>w :w!<cr>
 
 " Save for sudo with :W (no need to react with sudo)
 command! W execute 'w !sudo tee % > /dev/null' <bar> edit!
+
+
+
+"""""""""""""""""""""""
+" Vundle
+"""""""""""""""""""""""
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'preservim/nerdtree'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'tpope/vim-fugitive'
+
+call vundle#end()  "required
+
+filetype plugin indent on
 
 
 
@@ -92,12 +108,11 @@ set foldcolumn=1
 " Enable syntax highlighting 
 syntax enable
 
+set background=dark
 try
-	colorscheme desert
+	colorscheme desolarized 
 catch
 endtry
-
-set background=dark
 
 set encoding=utf8
 
