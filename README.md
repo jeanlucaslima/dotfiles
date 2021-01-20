@@ -26,3 +26,7 @@ And to install `fzf` run this and accept all options (y):
 ```
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && ~/.fzf/install
 ```
+
+### Brew
+
+All brew formulas were listed with `brew leaves` and they can be install with a simple bash input
