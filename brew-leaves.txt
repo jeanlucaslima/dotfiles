@@ -1,0 +1,14 @@
+bzip2
+elixir
+gh
+git
+hugo
+mysql
+node
+postgresql
+pyenv
+redis
+sqlite
+tmuxinator
+tor
+zlib
