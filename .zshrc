@@ -5,7 +5,7 @@ export ZSH="/Users/jeanlucaslima/.oh-my-zsh"
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-plugins=(git tmux zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git tmux zsh-autosuggestions zsh-syntax-highlighting genpass)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -25,4 +25,13 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export PATH="/usr/local/opt/node@14/bin:$PATH"
+export PATH="/usr/local/sbin:$PATH"
+
+# curl
+export PATH="/usr/local/opt/curl/bin:$PATH"
+export PATH="/usr/local/opt/sqlite/bin:$PATH"
+
+# Adding paths.d to $PATH mainly because of Postgres.App
+export PATH="/etc/paths.d/postgresapp:$PATH"
+
+alias tmux="tmux -u"
