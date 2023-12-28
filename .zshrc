@@ -35,3 +35,6 @@ export PATH="/usr/local/opt/sqlite/bin:$PATH"
 export PATH="/etc/paths.d/postgresapp:$PATH"
 
 alias tmux="tmux -u"
+alias confra="cd ~/dev/github.com/jeanlucaslima/confraria/; code .; mix phx.server"
+
+export HOMEBREW_NO_ENV_HINTS=1
