@@ -1,6 +1,11 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
+# Brew autocompletion setup (has to be before oh-my-zsh)
+FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+
+export ASDF_DIR="/Users/jeanlucaslima/.asdf"
+
 export ZSH="/Users/jeanlucaslima/.oh-my-zsh"
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -36,5 +41,22 @@ export PATH="/etc/paths.d/postgresapp:$PATH"
 
 alias tmux="tmux -u"
 alias confra="cd ~/dev/github.com/jeanlucaslima/confraria/; code .; mix phx.server"
+alias bu="brew update; brew upgrade; brew cleanup"
+
+# elixir / phoenix related aliases
+alias mcc="mix clean; mix compile"
+alias ms="mix phx.server"
+
+alias getip="dig @ns1.google.com TXT o-o.myaddr.l.google.com +short"
 
 export HOMEBREW_NO_ENV_HINTS=1
+export EDITOR="nvim"
+
+# asdf 
+. "$HOME/.asdf/asdf.sh"
+
+export DENO_INSTALL="/Users/jeanlucaslima/.deno"
+export PATH="$DENO_INSTALL/bin:$PATH"
+
+# Added by Windsurf
+export PATH="/Users/jeanlucaslima/.codeium/windsurf/bin:$PATH"
