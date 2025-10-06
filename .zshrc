@@ -1,62 +1,77 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# ─────────────────────────────────────────────────────────────────────────────
+# Brew autocompletion setup (must be before oh-my-zsh)
+# (Guarded so it won't error on systems without Homebrew)
+if command -v brew >/dev/null 2>&1; then
+  FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+fi
 
-# Brew autocompletion setup (has to be before oh-my-zsh)
-FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
+# De-duplicate path arrays (keeps first occurrence; prevents PATH bloat)
+typeset -U path fpath
 
-export ASDF_DIR="/Users/jeanlucaslima/.asdf"
-
-export ZSH="/Users/jeanlucaslima/.oh-my-zsh"
+export ASDF_DIR="$HOME/.asdf"
+export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-plugins=(git tmux zsh-autosuggestions zsh-syntax-highlighting genpass)
+# Order: autosuggestions BEFORE syntax-highlighting; highlighting LAST
+plugins=(git tmux genpass zsh-autosuggestions zsh-syntax-highlighting)
 
-source $ZSH/oh-my-zsh.sh
+source "$ZSH/oh-my-zsh.sh"
 
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+[[ -f ~/.p10k.zsh ]] && source ~/.p10k.zsh
 
 # Enable shell history for iex
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-source ~/.bash_profile
+# Only if you still rely on legacy exports there
+# [[ -f ~/.bash_profile ]] && source ~/.bash_profile
 
+# ── pyenv (single, non-duplicated) ───────────────────────────────────────────
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
-export PATH="/usr/local/opt/bzip2/bin:$PATH"
-
 eval "$(pyenv init -)"
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# Optional tooling
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 export PATH="/usr/local/sbin:$PATH"
-
-# curl
+export PATH="/usr/local/opt/bzip2/bin:$PATH"
 export PATH="/usr/local/opt/curl/bin:$PATH"
 export PATH="/usr/local/opt/sqlite/bin:$PATH"
-
-# Adding paths.d to $PATH mainly because of Postgres.App
-export PATH="/etc/paths.d/postgresapp:$PATH"
-
-alias tmux="tmux -u"
-alias confra="cd ~/dev/github.com/jeanlucaslima/confraria/; code .; mix phx.server"
-alias bu="brew update; brew upgrade; brew cleanup"
-
-# elixir / phoenix related aliases
-alias mcc="mix clean; mix compile"
-alias ms="mix phx.server"
-
-alias getip="dig @ns1.google.com TXT o-o.myaddr.l.google.com +short"
+# NOTE: /etc/paths.d is not a bin dir; don't add it directly to PATH.
 
 export HOMEBREW_NO_ENV_HINTS=1
 export EDITOR="nvim"
 
-# asdf 
-. "$HOME/.asdf/asdf.sh"
+# ── asdf init + completions (guarded) ────────────────────────────────────────
+if [[ -f "$ASDF_DIR/asdf.sh" ]]; then
+  . "$ASDF_DIR/asdf.sh"
+  # Add asdf completion functions; compinit is already run by oh-my-zsh
+  if [[ -d "$ASDF_DIR/completions" ]]; then
+    fpath=("$ASDF_DIR/completions" $fpath)
+  fi
+fi
 
-export DENO_INSTALL="/Users/jeanlucaslima/.deno"
+# ✅ Aliases have been moved to zsh/plugins/aliases.zsh
+# Add new aliases there instead of here.
+
+# Deno
+export DENO_INSTALL="$HOME/.deno"
 export PATH="$DENO_INSTALL/bin:$PATH"
 
-# Added by Windsurf
-export PATH="/Users/jeanlucaslima/.codeium/windsurf/bin:$PATH"
+# Windsurf
+export PATH="$HOME/.codeium/windsurf/bin:$PATH"
+
+# Rust (guarded)
+[[ -f "$HOME/.cargo/env" ]] && . "$HOME/.cargo/env"
+
+# ── Custom plugins loader (explicit order lives in plugins.zsh) ──────────────
+export DOTFILES="$HOME/dev/github.com/jeanlucaslima/dotfiles"
+
+# Dashboard knobs (optional)
+export DASHBOARD_SHOW_WEATHER=1
+export DASHBOARD_SHOW_STATS=1
+export DASHBOARD_CITY="Sao+Paulo"
+
+if [ -f "$DOTFILES/zsh/plugins.zsh" ]; then
+  source "$DOTFILES/zsh/plugins.zsh"
+fi
