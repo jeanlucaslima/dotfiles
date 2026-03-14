@@ -1,4 +1,6 @@
 README\.md
 install\.sh
+bootstrap\.sh
+macos-defaults\.sh
 \.gitignore
 \.stow-local-ignore

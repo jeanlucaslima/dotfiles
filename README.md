@@ -12,9 +12,17 @@ My macOS dotfiles, managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 ## Quick Setup
 
+Fresh Mac? Run the bootstrap script — it installs Homebrew, Oh My Zsh, Powerlevel10k, stows everything, and applies macOS defaults:
+
 ```bash
 git clone https://github.com/jeanlucaslima/dotfiles.git
 cd dotfiles
+./bootstrap.sh
+```
+
+Already set up? Just stow the dotfiles:
+
+```bash
 ./install.sh
 ```
 
@@ -38,9 +46,18 @@ stow -t ~ nvim
 | `mise`     | mise tool versions (node, python, rust, etc.)  |
 | `starship` | Starship prompt config                         |
 | `fish`     | Fish shell config                              |
+| `ssh`      | SSH config (GitHub key agent)                  |
 
 ## How It Works
 
 Each directory is a Stow "package". Running `stow -t ~ <package>` creates symlinks in `$HOME` that point back to the files in this repo. Edits to your config files automatically update the repo.
 
 To remove symlinks: `stow -t ~ -D <package>`
+
+## Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `install.sh` | Stow all packages into `$HOME` |
+| `bootstrap.sh` | Full fresh-Mac setup (Homebrew, Oh My Zsh, Powerlevel10k, stow, macOS defaults) |
+| `macos-defaults.sh` | Apply preferred macOS system settings (Dock, Finder, keyboard, screenshots) |
