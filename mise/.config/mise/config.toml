@@ -1,0 +1,13 @@
+[tools]
+bun = "latest"
+deno = "latest"
+elixir = "latest"
+elixir-ls = "latest"
+erlang = "latest"
+go = "latest"
+java = "temurin-21"
+kotlin = "latest"
+node = "lts"
+python = "latest"
+ruby = "latest"
+rust = "latest"
