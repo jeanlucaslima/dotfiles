@@ -2,8 +2,10 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 -- Font
-config.font = wezterm.font("Hack Nerd Font Mono")
+config.font = wezterm.font("MesloLGS Nerd Font")
 config.font_size = 14.0
+config.custom_block_glyphs = true
+config.anti_alias_custom_block_glyphs = true
 
 -- Window
 config.window_padding = {
