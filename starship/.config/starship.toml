@@ -15,6 +15,12 @@ $nodejs\
 $rust\
 $elixir\
 $python\
+$haskell\
+$java\
+$ruby\
+$deno\
+$kotlin\
+$golang\
 $cmd_duration\
 [](fg:bg_highlight bg:dark3)\
 $time\
@@ -86,22 +92,52 @@ symbol = "─"
 style = "fg:dark3"
 
 [nodejs]
-symbol = ""
+symbol = ""
 style = "fg:cyan bg:dark3"
 format = "[ $symbol $version ]($style)"
 
 [rust]
-symbol = ""
+symbol = ""
 style = "fg:red bg:dark3"
 format = "[ $symbol $version ]($style)"
 
 [elixir]
-symbol = ""
+symbol = ""
 style = "fg:magenta bg:dark3"
 format = "[ $symbol $version ]($style)"
 
 [python]
 symbol = ""
+style = "fg:cyan bg:dark3"
+format = "[ $symbol $version ]($style)"
+
+[haskell]
+symbol = ""
+style = "fg:magenta bg:dark3"
+format = "[ $symbol $version ]($style)"
+
+[java]
+symbol = ""
+style = "fg:red bg:dark3"
+format = "[ $symbol $version ]($style)"
+
+[ruby]
+symbol = ""
+style = "fg:red bg:dark3"
+format = "[ $symbol $version ]($style)"
+
+[deno]
+symbol = "🦕"
+style = "fg:cyan bg:dark3"
+format = "[ $symbol $version ]($style)"
+
+[kotlin]
+symbol = ""
+style = "fg:magenta bg:dark3"
+format = "[ $symbol $version ]($style)"
+
+[golang]
+symbol = ""
 style = "fg:cyan bg:dark3"
 format = "[ $symbol $version ]($style)"
 
