@@ -2,7 +2,10 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 -- Font
-config.font = wezterm.font("MesloLGS Nerd Font")
+config.font = wezterm.font_with_fallback({
+	"Meslo LG S",
+	{ family = "Symbols Nerd Font Mono", scale = 0.85, baseline = -0.15 },
+})
 config.font_size = 14.0
 config.custom_block_glyphs = true
 config.anti_alias_custom_block_glyphs = true
