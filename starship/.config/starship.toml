@@ -1,9 +1,9 @@
 palette = "tokyonight"
 
 format = """
-[](fg:bg)\
+[](fg:bg_highlight)\
 $os\
-[](fg:bg bg:blue)\
+[](fg:bg_highlight bg:blue)\
 $directory\
 [](fg:blue bg:green)\
 $git_branch\
@@ -15,11 +15,10 @@ $nodejs\
 $rust\
 $elixir\
 $python\
-[](fg:bg_highlight bg:dark3)\
 $cmd_duration\
-[](fg:bg bg:bg_highlight)\
+[](fg:bg_highlight bg:dark3)\
 $time\
-[](fg:bg)\
+[](fg:bg_highlight)\
 \n$character"""
 
 [palettes.tokyonight]
@@ -38,8 +37,8 @@ yellow = "#e0af68"
 
 [os]
 disabled = false
-style = "fg:blue bg:bg"
-format = "[  $symbol  ]($style)"
+style = "fg:blue bg:bg_highlight"
+format = "[ $symbol ]($style)"
 
 [os.symbols]
 Macos = ""
@@ -49,8 +48,8 @@ Windows = ""
 [directory]
 style = "fg:bg_dark bg:blue bold"
 format = "[ $path ]($style)"
-truncation_length = 0
-fish_style_pwd_dir_length = 1
+truncation_length = 5
+truncate_to_repo = false
 
 [directory.substitutions]
 "Documents" = "󰈙 "
@@ -65,7 +64,7 @@ format = "[ $symbol $branch ]($style)"
 
 [git_status]
 style = "fg:bg_dark bg:green"
-format = "[(| $conflicted$stashed$deleted$renamed$modified$staged$untracked$ahead_behind )]($style)"
+format = "[$conflicted$stashed$deleted$renamed$modified$staged$untracked$ahead_behind]($style)"
 conflicted = "=${count} "
 stashed = "📦${count} "
 deleted = "✘${count} "
@@ -78,7 +77,7 @@ behind = "⇣${count} "
 
 [fill]
 symbol = "─"
-style = "fg:bg_highlight"
+style = "fg:dark3"
 
 [nodejs]
 symbol = ""
@@ -102,13 +101,13 @@ format = "[ $symbol $version ]($style)"
 
 [cmd_duration]
 min_time = 2_000
-style = "fg:yellow bg:bg_highlight"
+style = "fg:yellow bg:dark3"
 format = "[ 󱎫 $duration ]($style)"
 
 [time]
 disabled = false
 time_format = "%R"
-style = "fg:fg_dark bg:bg"
+style = "fg:fg_dark bg:bg_highlight"
 format = "[  $time ]($style)"
 
 [character]
