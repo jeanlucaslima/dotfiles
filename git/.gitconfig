@@ -1,9 +1,37 @@
-# This is Git's per-user configuration file.
 [user]
 	name = Jean Lucas Lima
 	email = jeanleonino@gmail.com
-# Please adapt and uncomment the following lines:
-#	name = Jean Lucas Lima
-#	email = jeanleonino@gmail.com
 [init]
 	defaultBranch = main
+[core]
+	excludesFile = ~/.config/git/ignore
+	pager = bat --style=plain --paging=always
+[pull]
+	rebase = true
+[push]
+	autoSetupRemote = true
+	default = current
+[fetch]
+	prune = true
+[merge]
+	conflictstyle = zdiff3
+[diff]
+	algorithm = histogram
+	colorMoved = default
+[rebase]
+	autoStash = true
+	autoSquash = true
+[rerere]
+	enabled = true
+[alias]
+	s = status -sb
+	co = checkout
+	cb = checkout -b
+	cm = commit -m
+	ca = commit --amend --no-edit
+	d = diff
+	ds = diff --staged
+	lg = log --oneline --graph --decorate -20
+	lga = log --oneline --graph --decorate --all -30
+	undo = reset HEAD~1 --mixed
+	branches = branch --sort=-committerdate --format='%(committerdate:relative)\t%(refname:short)'

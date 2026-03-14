@@ -2,7 +2,7 @@
 set -euo pipefail
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-PACKAGES=(shell git nvim zed ghostty mise starship fish)
+PACKAGES=(shell git nvim zed ghostty mise starship fish ssh tmux)
 
 echo "Stowing dotfiles from $DOTFILES_DIR to $HOME"
 

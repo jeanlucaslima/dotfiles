@@ -1,1 +1,11 @@
+font-family = Hack Nerd Font
+font-size = 14
+theme = One Dark
+window-padding-x = 8
+window-padding-y = 4
+cursor-style = block
+shell-integration = zsh
 keybind = shift+enter=text:\x1b\r
+keybind = super+t=new_tab
+keybind = super+shift+enter=new_split:right
+keybind = super+shift+minus=new_split:down

@@ -1,1 +1,18 @@
+# Claude
 **/.claude/settings.local.json
+
+# macOS
+.DS_Store
+._*
+
+# Editors
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+
+# Environment
+.env.local
+.envrc
+.direnv/
