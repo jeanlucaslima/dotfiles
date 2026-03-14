@@ -82,7 +82,7 @@ ahead = "⇡${count} "
 behind = "⇣${count} "
 
 [fill]
-symbol = ""
+symbol = "─"
 style = "fg:dark3"
 
 [nodejs]
