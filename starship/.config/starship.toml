@@ -4,7 +4,7 @@ format = """
 [](fg:bg_highlight bg:bg_dark)\
 $os\
 [](fg:bg_highlight bg:blue)\
-$directory\
+${custom.dir}\
 [](fg:blue bg:green)\
 $git_branch\
 $git_status\
@@ -44,6 +44,12 @@ format = "[ $symbol ]($style)"
 Macos = ""
 Linux = "🐧"
 Windows = ""
+
+[custom.dir]
+command = "echo $PWD | sed \"s|^$HOME|~|\" | awk -F/ '{for(i=1;i<NF;i++) printf \"%s/\", substr($i,1,1); print $NF}'"
+when = true
+style = "fg:bg_dark bg:blue bold"
+format = "[ $output ]($style)"
 
 [directory]
 style = "fg:bg_dark bg:blue bold"
@@ -113,4 +119,3 @@ format = "[  $time ]($style)"
 [character]
 success_symbol = "[❯](bold fg:green)"
 error_symbol = "[❯](bold fg:red)"
-
