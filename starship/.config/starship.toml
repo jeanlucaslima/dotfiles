@@ -41,9 +41,9 @@ style = "fg:blue bg:bg_highlight"
 format = "[ $symbol ]($style)"
 
 [os.symbols]
-Macos = ""
+Macos = ""
 Linux = "🐧"
-Windows = ""
+Windows = ""
 
 [custom.dir]
 command = "echo $PWD | sed \"s|^$HOME|~|\" | awk -F/ '{for(i=1;i<NF;i++) printf \"%s/\", substr($i,1,1); print $NF}'"
@@ -64,7 +64,7 @@ truncate_to_repo = false
 "Pictures" = " "
 
 [git_branch]
-symbol = ""
+symbol = ""
 style = "fg:bg_dark bg:green"
 format = "[ $symbol $branch ]($style)"
 
@@ -82,26 +82,26 @@ ahead = "⇡${count} "
 behind = "⇣${count} "
 
 [fill]
-symbol = "─"
+symbol = ""
 style = "fg:dark3"
 
 [nodejs]
-symbol = ""
+symbol = ""
 style = "fg:cyan bg:dark3"
 format = "[ $symbol $version ]($style)"
 
 [rust]
-symbol = ""
+symbol = ""
 style = "fg:red bg:dark3"
 format = "[ $symbol $version ]($style)"
 
 [elixir]
-symbol = ""
+symbol = ""
 style = "fg:magenta bg:dark3"
 format = "[ $symbol $version ]($style)"
 
 [python]
-symbol = ""
+symbol = ""
 style = "fg:cyan bg:dark3"
 format = "[ $symbol $version ]($style)"
 
