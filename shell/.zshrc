@@ -42,7 +42,7 @@ eval "$(starship init zsh)"
 
 # Transient prompt — collapse previous prompts to ❯
 source /opt/homebrew/share/zsh-transient-prompt/transient-prompt.zsh-theme
-TRANSIENT_PROMPT_TRANSIENT_PROMPT='$(starship module character)'
+TRANSIENT_PROMPT_TRANSIENT_PROMPT="$(starship module character)"
 
 # Syntax highlighting should be last
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
