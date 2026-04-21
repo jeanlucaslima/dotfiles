@@ -2,3 +2,4 @@
 *.log
 *.tmp
 lazy-lock.json
+ssh/
