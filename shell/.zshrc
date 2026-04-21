@@ -113,6 +113,13 @@ bruh() {
     echo "\n🍎 Skipping App Store apps (mas not installed — run: brew install mas)"
   fi
 
+  if command -v mise &>/dev/null; then
+    echo "\n🧰 Updating mise-managed tools (global)..."
+    (cd "$HOME" && mise install && mise upgrade)
+  else
+    echo "\n🧰 Skipping mise (not installed)"
+  fi
+
   echo "\n🧹 Removing unused dependencies..."
   brew autoremove
 
