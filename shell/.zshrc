@@ -41,8 +41,9 @@ export FZF_CTRL_R_OPTS='--exact --keep-right --no-mouse --preview-window=down,3,
 eval "$(starship init zsh)"
 
 # Transient prompt — collapse previous prompts to ❯
-source /opt/homebrew/share/zsh-transient-prompt/transient-prompt.zsh-theme
-TRANSIENT_PROMPT_TRANSIENT_PROMPT="$(starship module character)"
+[ -f /opt/homebrew/share/zsh-transient-prompt/transient-prompt.zsh-theme ] && \
+  source /opt/homebrew/share/zsh-transient-prompt/transient-prompt.zsh-theme && \
+  TRANSIENT_PROMPT_TRANSIENT_PROMPT="$(starship module character)"
 
 # Syntax highlighting should be last
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -61,10 +62,10 @@ export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
 
 export ERL_AFLAGS="-kernel shell_history enabled"
 
-. "$HOME/.local/bin/env"
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 
 # Added by Antigravity
-export PATH="/Users/jeanlucaslima/.antigravity/antigravity/bin:$PATH"
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 # Aliases
 alias cat="bat --paging=never"
@@ -103,9 +104,14 @@ bruh() {
   echo "\n🖥  Upgrading $cask_before outdated casks..."
   brew upgrade --cask
 
-  mas_before=$(mas outdated | wc -l | tr -d ' ')
-  echo "\n🍎 Upgrading $mas_before App Store apps..."
-  mas upgrade
+  if command -v mas &>/dev/null; then
+    mas_before=$(mas outdated | wc -l | tr -d ' ')
+    echo "\n🍎 Upgrading $mas_before App Store apps..."
+    mas upgrade
+  else
+    mas_before=0
+    echo "\n🍎 Skipping App Store apps (mas not installed — run: brew install mas)"
+  fi
 
   echo "\n🧹 Removing unused dependencies..."
   brew autoremove
@@ -114,14 +120,16 @@ bruh() {
   brew cleanup -s
 
   echo "\n🩺 Running brew doctor..."
-  brew doctor 2>&1
+  brew doctor 2>&1 | grep -v -E "(ykpiv|ykcs11|libcrypto|libz\.1|openssl|zlib\.h)" || true
 
   echo "\n✅ Done — upgraded $outdated_before formulae, $cask_before casks, $mas_before App Store apps."
 }
 
 # bun completions
-[ -s "/Users/jeanlucaslima/.bun/_bun" ] && source "/Users/jeanlucaslima/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+. "$HOME/.cargo/env"
