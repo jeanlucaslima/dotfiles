@@ -1,0 +1,15 @@
+# bruh config
+#
+# Syntax:  key = value     (one per line, # for comments)
+#
+# Available keys:
+#   disabled  Space-separated list of steps to skip in the default `bruh` run.
+#             Disabled steps still run if invoked explicitly: `bruh yarn`.
+#
+# Available steps:
+#   brew mas mise npm bun pnpm yarn rustup pipx gem composer gcloud nix tldr macos cleanup
+#
+# Example:
+#   disabled = yarn nix composer
+
+disabled = gem composer nix 
