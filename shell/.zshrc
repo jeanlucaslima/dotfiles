@@ -93,6 +93,8 @@ alias zshrc="$EDITOR ~/.zshrc"
 bruh() {
   local all_steps=(brew mas mise npm bun pnpm yarn rustup pipx gem composer gcloud nix tldr macos cleanup)
   local BRUH_DISABLED=()
+  local BRUH_PROMPT_DISABLE=true
+  local BRUH_PROMPT_ENABLE=true
   local config_file="${XDG_CONFIG_HOME:-$HOME/.config}/bruh/config"
   if [ -r "$config_file" ]; then
     local line key value
@@ -107,10 +109,73 @@ bruh() {
       case "$key" in
         disabled)
           [ -n "$value" ] && BRUH_DISABLED=(${=value}) ;;
+        prompt_disable)
+          BRUH_PROMPT_DISABLE="$value" ;;
+        prompt_enable)
+          BRUH_PROMPT_ENABLE="$value" ;;
         "") ;;
         *) echo "⚠️  bruh config: unknown key '$key' in $config_file" ;;
       esac
     done < "$config_file"
+  fi
+
+  # Map a step name to the binary that proves it's installed.
+  _bruh_step_cmd() {
+    case "$1" in
+      nix) echo nix-channel ;;
+      macos|cleanup|brew) echo brew ;;
+      *) echo "$1" ;;
+    esac
+  }
+
+  _bruh_upsert_key() {
+    local key="$1" val="$2" file="$3"
+    mkdir -p "$(dirname "$file")"
+    [ ! -f "$file" ] && touch "$file"
+    if grep -q "^[[:space:]]*${key}[[:space:]]*=" "$file"; then
+      local tmp
+      tmp=$(mktemp)
+      sed "s|^[[:space:]]*${key}[[:space:]]*=.*|${key} = ${val}|" "$file" > "$tmp" && mv "$tmp" "$file"
+    else
+      printf '%s = %s\n' "$key" "$val" >> "$file"
+    fi
+  }
+
+  # If a disabled step now has its tool installed, offer to re-enable it.
+  if [ ${#BRUH_DISABLED[@]} -gt 0 ] && [ -t 0 ] && [[ "$BRUH_PROMPT_ENABLE" != "false" ]]; then
+    local -a now_installed
+    local d cmd
+    for d in "${BRUH_DISABLED[@]}"; do
+      cmd=$(_bruh_step_cmd "$d")
+      command -v "$cmd" &>/dev/null && now_installed+=("$d")
+    done
+    if [ ${#now_installed[@]} -gt 0 ]; then
+      echo "💡 These disabled tools are now installed: ${now_installed[*]}"
+      echo "   Re-enable them in bruh's default run?"
+      echo "   [y]es  [n]o  [s]top asking (sets prompt_enable = false)"
+      printf "   > "
+      local reply
+      read -r reply
+      case "${reply:l}" in
+        y|yes)
+          local -a kept
+          for d in "${BRUH_DISABLED[@]}"; do
+            [[ ! " ${now_installed[*]} " == *" $d "* ]] && kept+=("$d")
+          done
+          BRUH_DISABLED=("${kept[@]}")
+          _bruh_upsert_key disabled "${BRUH_DISABLED[*]}" "$config_file"
+          echo "   ✓ Re-enabled: ${now_installed[*]}"
+          ;;
+        s|stop|never)
+          _bruh_upsert_key prompt_enable false "$config_file"
+          echo "   ✓ Won't ask again (prompt_enable = false in $config_file)"
+          ;;
+        *)
+          echo "   skipped"
+          ;;
+      esac
+      echo
+    fi
   fi
 
   local DRY=0
@@ -473,61 +538,89 @@ bruh() {
     esac
   done
 
-  echo "\n╭─ bruh summary${suffix} ─ ${elapsed_str} ─────────"
+  echo "\n📋 bruh summary${suffix} — ${elapsed_str}"
 
   if [ ${#updated[@]} -gt 0 ]; then
-    echo "│"
-    echo "│  ✅ Updated (${#updated[@]})"
+    echo "\n✅ Updated (${#updated[@]})"
     for entry in "${updated[@]}"; do
-      printf "│     %-10s %s\n" "${entry%%|*}" "${entry#*|}"
+      printf "   %-10s %s\n" "${entry%%|*}" "${entry#*|}"
     done
   fi
 
   if [ ${#info[@]} -gt 0 ]; then
-    echo "│"
-    echo "│  ℹ️  Info (${#info[@]})"
+    echo "\nℹ️  Info (${#info[@]})"
     for entry in "${info[@]}"; do
-      printf "│     %-10s %s\n" "${entry%%|*}" "${entry#*|}"
+      printf "   %-10s %s\n" "${entry%%|*}" "${entry#*|}"
     done
   fi
 
   if [ ${#skipped[@]} -gt 0 ]; then
-    echo "│"
-    echo "│  ⚠️  Skipped (${#skipped[@]})"
+    echo "\n⚠️  Skipped (${#skipped[@]})"
     for entry in "${skipped[@]}"; do
-      printf "│     %-10s %s\n" "${entry%%|*}" "${entry#*|}"
+      printf "   %-10s %s\n" "${entry%%|*}" "${entry#*|}"
     done
   fi
 
   if [ ${#failed[@]} -gt 0 ]; then
-    echo "│"
-    echo "│  ❌ Failed (${#failed[@]})"
+    echo "\n❌ Failed (${#failed[@]})"
     for entry in "${failed[@]}"; do
-      printf "│     %-10s %s\n" "${entry%%|*}" "${entry#*|}"
+      printf "   %-10s %s\n" "${entry%%|*}" "${entry#*|}"
     done
   fi
 
   if [ ${#args[@]} -eq 0 ] && [ ${#BRUH_DISABLED[@]} -gt 0 ]; then
-    echo "│"
-    echo "│  ⏭  Disabled via config (${#BRUH_DISABLED[@]})"
-    echo "│     ${BRUH_DISABLED[*]}"
+    echo "\n⏭  Disabled via config (${#BRUH_DISABLED[@]})"
+    echo "   ${BRUH_DISABLED[*]}"
   fi
 
   if [ ${#BRUH_NOTES[@]} -gt 0 ]; then
-    echo "│"
-    echo "│  📌 Action items"
+    echo "\n📌 Action items"
     for note in "${BRUH_NOTES[@]}"; do
-      echo "│     $note"
+      echo "   $note"
     done
   fi
 
-  echo "│"
+  echo
   if [ ${#failed[@]} -gt 0 ]; then
-    echo "╰─ ❌ ${#failed[@]} failed, ${#updated[@]} updated, ${#skipped[@]} skipped${suffix}"
-    return 1
+    echo "❌ ${#failed[@]} failed, ${#updated[@]} updated, ${#skipped[@]} skipped${suffix}"
   else
-    echo "╰─ ✅ ${#updated[@]} updated, ${#skipped[@]} skipped, ${#info[@]} info${suffix}"
+    echo "✅ ${#updated[@]} updated, ${#skipped[@]} skipped, ${#info[@]} info${suffix}"
   fi
+
+  # Offer to auto-disable tools that aren't installed (only for full runs, not dry-run)
+  if [ ${#args[@]} -eq 0 ] && [ $DRY -eq 0 ] && [ -t 0 ] && [[ "$BRUH_PROMPT_DISABLE" != "false" ]]; then
+    local -a to_disable
+    for entry in "${skipped[@]}"; do
+      [[ "${entry#*|}" == "not installed" ]] && to_disable+=("${entry%%|*}")
+    done
+    if [ ${#to_disable[@]} -gt 0 ]; then
+      echo
+      echo "💡 Add these never-installed tools to bruh's disabled list?"
+      echo "   ${to_disable[*]}"
+      echo "   [y]es  [n]o  [s]top asking (sets prompt_disable = false)"
+      printf "   > "
+      local reply
+      read -r reply
+      case "${reply:l}" in
+        y|yes)
+          local merged=("${BRUH_DISABLED[@]}" "${to_disable[@]}")
+          _bruh_upsert_key disabled "${merged[*]}" "$config_file"
+          echo "   ✓ Added to disabled list in $config_file"
+          ;;
+        s|stop|never)
+          _bruh_upsert_key prompt_disable false "$config_file"
+          echo "   ✓ Won't ask again (prompt_disable = false in $config_file)"
+          ;;
+        *)
+          echo "   skipped"
+          ;;
+      esac
+    fi
+  fi
+
+  unset -f _bruh_upsert_key _bruh_step_cmd
+  [ ${#failed[@]} -gt 0 ] && return 1
+  return 0
 }
 
 # bun completions

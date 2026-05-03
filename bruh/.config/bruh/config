@@ -3,13 +3,21 @@
 # Syntax:  key = value     (one per line, # for comments)
 #
 # Available keys:
-#   disabled  Space-separated list of steps to skip in the default `bruh` run.
-#             Disabled steps still run if invoked explicitly: `bruh yarn`.
+#   disabled         Space-separated list of steps to skip in the default `bruh` run.
+#                    Disabled steps still run if invoked explicitly: `bruh yarn`.
+#   prompt_disable   true|false (default: true) — after each full run, offer to add
+#                    never-installed tools to the disabled list.
+#   prompt_enable    true|false (default: true) — at startup, if a disabled tool is
+#                    now installed, offer to remove it from the disabled list.
 #
 # Available steps:
 #   brew mas mise npm bun pnpm yarn rustup pipx gem composer gcloud nix tldr macos cleanup
 #
-# Example:
+# Examples:
 #   disabled = yarn nix composer
+#   prompt_disable = false       # silence the "add to disabled?" prompt
+#   prompt_enable  = false       # silence the "re-enable now-installed?" prompt
 
-disabled = gem composer nix 
+disabled = gem composer nix
+# prompt_disable = false
+# prompt_enable = false
