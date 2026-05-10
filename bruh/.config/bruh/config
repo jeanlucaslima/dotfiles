@@ -11,7 +11,7 @@
 #                    now installed, offer to remove it from the disabled list.
 #
 # Available steps:
-#   brew mas mise npm bun pnpm yarn rustup pipx gem composer gcloud nix tldr macos cleanup
+#   brew mas mise npm bun pnpm yarn rustup pipx pip gem composer gcloud nix tldr macos cleanup
 #
 # Examples:
 #   disabled = yarn nix composer

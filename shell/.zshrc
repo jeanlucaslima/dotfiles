@@ -91,7 +91,7 @@ alias zshrc="$EDITOR ~/.zshrc"
 
 # Homebrew maintenance in one shot
 bruh() {
-  local all_steps=(brew mas mise npm bun pnpm yarn rustup pipx gem composer gcloud nix tldr macos cleanup)
+  local all_steps=(brew mas mise npm bun pnpm yarn rustup pipx pip gem composer gcloud nix tldr macos cleanup)
   local BRUH_DISABLED=()
   local BRUH_PROMPT_DISABLE=true
   local BRUH_PROMPT_ENABLE=true
@@ -401,6 +401,35 @@ bruh() {
     fi
   fi
 
+  if _bruh_has pip; then
+    local pip_cmd=""
+    if command -v pip3 &>/dev/null; then
+      pip_cmd=pip3
+    elif command -v pip &>/dev/null; then
+      pip_cmd=pip
+    fi
+    if [ -n "$pip_cmd" ]; then
+      local pip_outdated_list pip_outdated_count pip_pkgs
+      pip_outdated_list=$($pip_cmd list --user --outdated --format=freeze 2>/dev/null)
+      pip_outdated_count=$(echo "$pip_outdated_list" | grep -c .)
+      if [ "$pip_outdated_count" -gt 0 ]; then
+        pip_pkgs=$(echo "$pip_outdated_list" | cut -d= -f1 | tr '\n' ' ')
+        echo "\n🐍 Upgrading $pip_outdated_count outdated --user pip packages..."
+        if _bruh_run $pip_cmd install --user --upgrade ${=pip_pkgs}; then
+          _bruh_set pip "ok ($pip_outdated_count packages)"
+        else
+          _bruh_set pip "failed"
+        fi
+      else
+        echo "\n🐍 Skipping pip (no outdated --user packages)"
+        _bruh_set pip "no outdated"
+      fi
+    else
+      echo "\n🐍 Skipping pip (not installed)"
+      _bruh_set pip "not installed"
+    fi
+  fi
+
   if _bruh_has gem; then
     if command -v gem &>/dev/null; then
       echo "\n💎 Updating gem and installed gems..."
@@ -533,7 +562,7 @@ bruh() {
       "up to date"|dry-run) info+=("$step|$st") ;;
       "updates available"*) info+=("$step|$st") ;;
       failed*) failed+=("$step|$st") ;;
-      "not installed"|"no globals"*) skipped+=("$step|$st") ;;
+      "not installed"|"no globals"*|"no outdated"*) skipped+=("$step|$st") ;;
       *) noop+=("$step|$st") ;;
     esac
   done
