@@ -18,6 +18,7 @@
 #   prompt_disable = false       # silence the "add to disabled?" prompt
 #   prompt_enable  = false       # silence the "re-enable now-installed?" prompt
 
-disabled = gem composer nix
+disabled = gem composer nix pipx gcloud
 # prompt_disable = false
 # prompt_enable = false
+prompt_enable = false
