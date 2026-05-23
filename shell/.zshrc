@@ -86,6 +86,10 @@ alias gl="git log --oneline --graph --decorate -20"
 alias gp="git push"
 alias gpl="git pull"
 
+# AI CLIs
+alias c="claude"
+alias o="codex"
+
 # Quick config editing
 alias zshrc="$EDITOR ~/.zshrc"
 
