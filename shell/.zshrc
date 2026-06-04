@@ -32,8 +32,10 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'     # subtle gray
 
 # fzf completion & keybindings (Ctrl-R popup)
-[ -f "$(brew --prefix)/opt/fzf/shell/key-bindings.zsh" ] && source "$(brew --prefix)/opt/fzf/shell/key-bindings.zsh"
-[ -f "$(brew --prefix)/opt/fzf/shell/completion.zsh" ] && source "$(brew --prefix)/opt/fzf/shell/completion.zsh"
+# Use the hardcoded Homebrew prefix (matches the rest of this file) instead of
+# forking `brew --prefix` — brew is a Ruby script and each call costs ~30ms.
+[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ] && source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+[ -f /opt/homebrew/opt/fzf/shell/completion.zsh ] && source /opt/homebrew/opt/fzf/shell/completion.zsh
 
 # Make fzf appear as a small popup at the bottom
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --info=inline'
