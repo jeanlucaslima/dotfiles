@@ -10,8 +10,10 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR='nvim'
 export VISUAL='nvim'
 
-autoload -U compinit
-compinit
+# Key the completion dump to the zsh version so upgrades rebuild it cleanly
+# (avoids stale `_main_complete: function definition file not found` errors)
+autoload -Uz compinit
+compinit -d "${ZDOTDIR:-$HOME}/.zcompdump-${ZSH_VERSION}"
 
 eval "$(mise activate zsh)"
 eval "$(zoxide init zsh)"

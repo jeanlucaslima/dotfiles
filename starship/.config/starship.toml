@@ -1,5 +1,9 @@
 palette = "tokyonight"
 
+# Allow slow first-run commands (e.g. cold-start `node --version` on the
+# mise-managed binary) to finish instead of timing out at the 500ms default.
+command_timeout = 2000
+
 format = """
 [](fg:bg_highlight bg:bg_dark)\
 $os\
