@@ -1,6 +1,7 @@
 [user]
 	name = Jean Lucas Lima
 	email = jeanleonino@gmail.com
+	signingkey = /Users/jeanlucaslima/.ssh/id_ed25519.pub
 [init]
 	defaultBranch = main
 [core]
@@ -35,3 +36,9 @@
 	lga = log --oneline --graph --decorate --all -30
 	undo = reset HEAD~1 --mixed
 	branches = branch --sort=-committerdate --format='%(committerdate:relative)\t%(refname:short)'
+[gpg]
+	format = ssh
+[commit]
+	gpgsign = true
+[tag]
+	gpgsign = true
