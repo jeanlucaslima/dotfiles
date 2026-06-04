@@ -10,10 +10,11 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR='nvim'
 export VISUAL='nvim'
 
-# Key the completion dump to the zsh version so upgrades rebuild it cleanly
-# (avoids stale `_main_complete: function definition file not found` errors)
-autoload -Uz compinit
-compinit -d "${ZDOTDIR:-$HOME}/.zcompdump-${ZSH_VERSION}"
+# NOTE: do not run compinit here. oh-my-zsh already runs it above with a
+# host+version-keyed dump that self-heals on zsh upgrades or fpath changes
+# (see oh-my-zsh.sh). A second bare `compinit` writes a non-versioned
+# ~/.zcompdump that goes stale across zsh upgrades, which is what caused the
+# intermittent `_main_complete: function definition file not found` errors.
 
 eval "$(mise activate zsh)"
 eval "$(zoxide init zsh)"
