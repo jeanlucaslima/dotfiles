@@ -56,9 +56,18 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # Smarter completion behavior
 setopt AUTO_LIST AUTO_MENU COMPLETE_IN_WORD
 bindkey '^I' expand-or-complete         # Tab completes
-# Arrow up/down search history by prefix:
+# Arrow up/down search history by prefix. Bind BOTH the normal (^[[A) and
+# application-cursor-mode (^[OA) sequences — terminals flip zle into app mode
+# during line editing, so the up arrow often sends ^[OA. Binding only ^[[A left
+# ^[OA on OMZ's default up-line-or-beginning-search, which autosuggest wraps and
+# whose autoload file vanishes after a zsh upgrade (intermittent "function
+# definition file not found"). terminfo covers whatever this terminal actually sends.
 bindkey '^[[A' up-line-or-search
 bindkey '^[[B' down-line-or-search
+bindkey '^[OA' up-line-or-search
+bindkey '^[OB' down-line-or-search
+[[ -n "${terminfo[kcuu1]}" ]] && bindkey "${terminfo[kcuu1]}" up-line-or-search
+[[ -n "${terminfo[kcud1]}" ]] && bindkey "${terminfo[kcud1]}" down-line-or-search
 
 # Use fd for fzf file finding
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
