@@ -628,10 +628,32 @@ bruh() {
   fi
 
   echo
-  if [ ${#failed[@]} -gt 0 ]; then
-    echo "❌ ${#failed[@]} failed, ${#updated[@]} updated, ${#skipped[@]} skipped${suffix}"
+  local n_up=${#updated[@]} n_sk=${#skipped[@]} n_info=${#info[@]} n_fail=${#failed[@]}
+  # Tally the actual packages/formulae/casks/apps from each tool's "ok (N ...)" detail
+  local total_items=0 entry_n num
+  for entry in "${updated[@]}"; do
+    for num in ${(s: :)${${entry#*|}//[^0-9]/ }}; do
+      total_items=$(( total_items + num ))
+    done
+  done
+  local -a parts
+  local up_str="freshened up $n_up $([ $n_up -eq 1 ] && echo tool || echo tools)"
+  [ $total_items -gt 0 ] && up_str+=" ($total_items $([ $total_items -eq 1 ] && echo package || echo packages) in all)"
+  [ $n_up -gt 0 ]   && parts+=("$up_str")
+  [ $n_sk -gt 0 ]   && parts+=("skipped $n_sk")
+  [ $n_info -gt 0 ] && parts+=("$n_info already current")
+  local joined
+  case ${#parts[@]} in
+    0) joined="nothing to do" ;;
+    1) joined="${parts[1]}" ;;
+    *) joined="${(j:, :)parts[1,-2]} and ${parts[-1]}" ;;
+  esac
+  if [ $n_fail -gt 0 ]; then
+    echo "💥 Finished in ${elapsed_str}${suffix}, but $n_fail $([ $n_fail -eq 1 ] && echo step || echo steps) failed — peek at the ❌ section above. (Otherwise ${joined}.)"
+  elif [ $n_up -eq 0 ]; then
+    echo "👍 All quiet in ${elapsed_str}${suffix} — everything was already up to date."
   else
-    echo "✅ ${#updated[@]} updated, ${#skipped[@]} skipped, ${#info[@]} info${suffix}"
+    echo "✨ All set in ${elapsed_str}${suffix} — ${joined}."
   fi
 
   # Offer to auto-disable tools that aren't installed (only for full runs, not dry-run)
