@@ -36,6 +36,7 @@
 	lga = log --oneline --graph --decorate --all -30
 	undo = reset HEAD~1 --mixed
 	branches = branch --sort=-committerdate --format='%(committerdate:relative)\t%(refname:short)'
+	tree = log --graph --decorate --oneline --all
 [gpg]
 	format = ssh
 [gpg "ssh"]
