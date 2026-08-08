@@ -3,7 +3,7 @@ export ZSH="$HOME/.oh-my-zsh"
 
 ZSH_THEME=""
 
-plugins=(mix)
+plugins=(mix codex)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -84,9 +84,9 @@ export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 # Aliases
 alias cat="bat --paging=never"
 alias catp="bat"
-alias list="eza --icons -l --git"
-alias la="eza --icons -la --git"
-alias lt="eza --icons -l --git --tree --level=2"
+alias list="eza --icons -l --git --smart-group"
+alias la="eza --icons -la --git --smart-group"
+alias lt="eza --icons -l --git --smart-group --tree --level=2"
 
 # Navigation
 alias ..="cd .."
@@ -103,6 +103,7 @@ alias gpl="git pull"
 # AI CLIs
 alias c="claude"
 alias o="codex"
+compdef _codex o
 
 # Quick config editing
 alias zshrc="$EDITOR ~/.zshrc"
