@@ -549,6 +549,12 @@ bruh() {
     _bruh_run brew autoremove; rc=$?
     echo "\n🧼 Cleaning up old downloads..."
     _bruh_run brew cleanup -s; (( rc |= $? ))
+    if command -v mole &>/dev/null; then
+      echo "\n🕳️  Deep-cleaning disk space with mole..."
+      _bruh_run mole clean; (( rc |= $? ))
+    else
+      echo "\n🕳️  Skipping mole (not installed — run: brew install mole)"
+    fi
     echo "\n🩺 Running brew doctor..."
     if [ $DRY -eq 1 ]; then
       echo "   [dry-run] would run: brew doctor"
