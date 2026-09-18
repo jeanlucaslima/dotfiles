@@ -7,12 +7,11 @@ My macOS dotfiles, managed with [GNU Stow](https://www.gnu.org/software/stow/).
 - [Homebrew](https://brew.sh/)
 - GNU Stow: `brew install stow`
 - [Oh My Zsh](https://ohmyz.sh/)
-- [Powerlevel10k](https://github.com/romkatv/powerlevel10k)
 - [mise](https://mise.jdx.dev/) (runtime manager)
 
 ## Quick Setup
 
-Fresh Mac? Run the bootstrap script — it installs Homebrew, Oh My Zsh, Powerlevel10k, stows everything, and applies macOS defaults:
+Fresh Mac? Run the bootstrap script — it installs Homebrew, Oh My Zsh, stows everything, and applies macOS defaults:
 
 ```bash
 git clone https://github.com/jeanlucaslima/dotfiles.git
@@ -38,7 +37,7 @@ stow -t ~ nvim
 
 | Package    | What it manages                                |
 |------------|------------------------------------------------|
-| `shell`    | `.zshrc`, `.bashrc`, `.profile`, `.p10k.zsh`, `.fzf.*` |
+| `shell`    | `.zshrc`, `.bashrc`, `.profile`, `.fzf.*`      |
 | `git`      | `.gitconfig`, `.config/git/ignore`             |
 | `nvim`     | Neovim config (LazyVim)                        |
 | `ghostty`  | Ghostty terminal config                        |
@@ -46,7 +45,9 @@ stow -t ~ nvim
 | `mise`     | mise tool versions (node, python, rust, etc.)  |
 | `starship` | Starship prompt config                         |
 | `fish`     | Fish shell config                              |
-| `ssh`      | SSH config (GitHub key agent)                  |
+| `ssh`      | SSH config (1Password agent)                   |
+| `tmux`     | tmux config                                    |
+| `bruh`     | `bruh` updater config                          |
 
 ## How It Works
 
