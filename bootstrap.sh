@@ -29,24 +29,15 @@ else
   echo "==> Oh My Zsh already installed"
 fi
 
-# 4. Install Powerlevel10k theme
-P10K_DIR="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
-if [ ! -d "$P10K_DIR" ]; then
-  echo "==> Installing Powerlevel10k..."
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$P10K_DIR"
-else
-  echo "==> Powerlevel10k already installed"
-fi
-
-# 5. Stow all packages
+# 4. Stow all packages
 echo "==> Stowing dotfiles..."
 "$DOTFILES_DIR/install.sh"
 
-# 6. Apply macOS defaults
+# 5. Apply macOS defaults
 echo "==> Applying macOS defaults..."
 "$DOTFILES_DIR/macos-defaults.sh"
 
-# 7. SSH key reminder
+# 6. SSH key reminder
 if [ ! -f "$HOME/.ssh/id_ed25519" ]; then
   echo ""
   echo "==> NOTE: No SSH key found at ~/.ssh/id_ed25519"
