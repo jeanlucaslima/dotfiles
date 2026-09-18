@@ -19,6 +19,8 @@ cd dotfiles
 ./bootstrap.sh
 ```
 
+The order matters (sign into the App Store first, 1Password SSH agent after) — see [NEW_MACHINE.md](NEW_MACHINE.md) for the full step-by-step.
+
 Already set up? Just stow the dotfiles:
 
 ```bash
@@ -60,5 +62,5 @@ To remove symlinks: `stow -t ~ -D <package>`
 | Script | Purpose |
 |--------|---------|
 | `install.sh` | Stow all packages into `$HOME` |
-| `bootstrap.sh` | Full fresh-Mac setup (Homebrew, Oh My Zsh, Powerlevel10k, stow, macOS defaults) |
+| `bootstrap.sh` | Full fresh-Mac setup (Homebrew, Oh My Zsh, stow, macOS defaults) |
 | `macos-defaults.sh` | Apply preferred macOS system settings (Dock, Finder, keyboard, screenshots) |
