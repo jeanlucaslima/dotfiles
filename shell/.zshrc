@@ -110,7 +110,7 @@ alias zshrc="$EDITOR ~/.zshrc"
 
 # Homebrew maintenance in one shot
 bruh() {
-  local all_steps=(brew mas mise npm bun pnpm yarn rustup pipx pip gem composer gcloud nix tldr macos cleanup)
+  local all_steps=(brew mas mise npm bun pnpm yarn rustup pipx pip gem composer gcloud nix tldr macos cleanup mole)
   local BRUH_DISABLED=()
   local BRUH_PROMPT_DISABLE=true
   local BRUH_PROMPT_ENABLE=true
@@ -549,12 +549,6 @@ bruh() {
     _bruh_run brew autoremove; rc=$?
     echo "\n🧼 Cleaning up old downloads..."
     _bruh_run brew cleanup -s; (( rc |= $? ))
-    if command -v mole &>/dev/null; then
-      echo "\n🕳️  Deep-cleaning disk space with mole..."
-      _bruh_run mole clean; (( rc |= $? ))
-    else
-      echo "\n🕳️  Skipping mole (not installed — run: brew install mole)"
-    fi
     echo "\n🩺 Running brew doctor..."
     if [ $DRY -eq 1 ]; then
       echo "   [dry-run] would run: brew doctor"
@@ -600,6 +594,20 @@ bruh() {
       printf "   %-10s %s\n" "${entry%%|*}" "${entry#*|}"
     done
   fi
+  if _bruh_has mole; then
+    if command -v mole &>/dev/null; then
+      echo "\n🕳️  Deep-cleaning disk space with mole..."
+      if _bruh_run mole clean; then
+        _bruh_set mole "ok"
+      else
+        _bruh_set mole "failed"
+      fi
+    else
+      echo "\n🕳️  Skipping mole (not installed — run: brew install mole)"
+      _bruh_set mole "not installed"
+    fi
+  fi
+
 
   if [ ${#info[@]} -gt 0 ]; then
     echo "\nℹ️  Info (${#info[@]})"

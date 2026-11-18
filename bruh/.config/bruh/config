@@ -11,14 +11,14 @@
 #                    now installed, offer to remove it from the disabled list.
 #
 # Available steps:
-#   brew mas mise npm bun pnpm yarn rustup pipx pip gem composer gcloud nix tldr macos cleanup
+#   brew mas mise npm bun pnpm yarn rustup pipx pip gem composer gcloud nix tldr macos cleanup mole
 #
 # Examples:
 #   disabled = yarn nix composer
 #   prompt_disable = false       # silence the "add to disabled?" prompt
 #   prompt_enable  = false       # silence the "re-enable now-installed?" prompt
 
-disabled = gem composer nix pipx gcloud
+disabled = gem composer nix pipx gcloud mole
 # prompt_disable = false
 # prompt_enable = false
 prompt_enable = false
