@@ -100,6 +100,9 @@ alias gl="git log --oneline --graph --decorate -20"
 alias gp="git push"
 alias gpl="git pull"
 
+# npm shortcuts
+alias nrd="npm run dev"
+
 # AI CLIs
 alias c="claude"
 alias o="codex"
