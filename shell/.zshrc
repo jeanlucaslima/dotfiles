@@ -108,6 +108,39 @@ alias c="claude"
 alias o="codex"
 compdef _codex o
 
+# Claude Code "Code Mode" (experimental): on by default in every shell.
+# `codemode off` / `codemode on` flips it for all shells at once (a marker file,
+# re-read before each prompt); bare `codemode` shows the state. Only Claude
+# sessions started after a flip are affected. The starship prompt shows a
+# "code mode" badge while it's on.
+_CODEMODE_OFF_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/claude/code-mode-off"
+_codemode_sync() {
+  if [[ -e "$_CODEMODE_OFF_FILE" ]]; then
+    unset CLAUDE_CODE_EXPERIMENTAL_CODE_MODE
+  else
+    export CLAUDE_CODE_EXPERIMENTAL_CODE_MODE=1
+  fi
+}
+_codemode_sync
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd _codemode_sync
+codemode() {
+  case "$1" in
+    on)  rm -f "$_CODEMODE_OFF_FILE" ;;
+    off) mkdir -p "${_CODEMODE_OFF_FILE:h}" && : > "$_CODEMODE_OFF_FILE" ;;
+    ""|status) ;;
+    *) echo "usage: codemode [on|off|status]"; return 1 ;;
+  esac
+  _codemode_sync
+  if [[ "$CLAUDE_CODE_EXPERIMENTAL_CODE_MODE" == 1 ]]; then
+    echo "Code Mode: on"
+  else
+    echo "Code Mode: off"
+  fi
+  [[ "$1" == on || "$1" == off ]] && echo "(new claude sessions only; running ones keep their mode)"
+  return 0
+}
+
 # Quick config editing
 alias zshrc="$EDITOR ~/.zshrc"
 
@@ -561,6 +594,20 @@ bruh() {
     [ $rc -eq 0 ] && _bruh_set cleanup "ok" || _bruh_set cleanup "failed"
   fi
 
+  if _bruh_has mole; then
+    if command -v mole &>/dev/null; then
+      echo "\n🕳️  Deep-cleaning disk space with mole..."
+      if _bruh_run mole clean; then
+        _bruh_set mole "ok"
+      else
+        _bruh_set mole "failed"
+      fi
+    else
+      echo "\n🕳️  Skipping mole (not installed — run: brew install mole)"
+      _bruh_set mole "not installed"
+    fi
+  fi
+
   unset -f _bruh_has _bruh_run _bruh_set _bruh_note
 
   local suffix=""
@@ -597,20 +644,6 @@ bruh() {
       printf "   %-10s %s\n" "${entry%%|*}" "${entry#*|}"
     done
   fi
-  if _bruh_has mole; then
-    if command -v mole &>/dev/null; then
-      echo "\n🕳️  Deep-cleaning disk space with mole..."
-      if _bruh_run mole clean; then
-        _bruh_set mole "ok"
-      else
-        _bruh_set mole "failed"
-      fi
-    else
-      echo "\n🕳️  Skipping mole (not installed — run: brew install mole)"
-      _bruh_set mole "not installed"
-    fi
-  fi
-
 
   if [ ${#info[@]} -gt 0 ]; then
     echo "\nℹ️  Info (${#info[@]})"

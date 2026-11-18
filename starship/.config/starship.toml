@@ -15,6 +15,7 @@ $git_status\
 [](fg:green bg:bg_dark)\
 $fill\
 [](fg:dark3 bg:bg_dark)\
+${env_var.CLAUDE_CODE_EXPERIMENTAL_CODE_MODE}\
 $nodejs\
 $rust\
 $elixir\
@@ -44,6 +45,11 @@ green = "#9ece6a"
 magenta = "#bb9af7"
 red = "#f7768e"
 yellow = "#e0af68"
+
+# Claude Code Code Mode badge: shown while the var is set (see `codemode` in .zshrc)
+[env_var.CLAUDE_CODE_EXPERIMENTAL_CODE_MODE]
+style = "fg:magenta bg:dark3"
+format = "[ 󰅩 code mode ]($style)"
 
 [os]
 disabled = false
